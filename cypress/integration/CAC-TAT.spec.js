@@ -10,6 +10,9 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
     })
 
     it('Preenche os campos obrigatórios e envia o formulário', function(){
+        
+        cy.clock() //congelo o relógio donavegador para capturar imagens/mensagens que desaparecem 
+       
         cy.get('#firstName').should('be.visible').type('Leonardo')
         cy.get('#firstName').should('have.value', 'Leonardo')
 
@@ -23,7 +26,7 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         
         //cy.get('#open-text-area').type('Correção de Exercícios')
         
-        //linhas 32 e 33 - Para longos textos eu posso criar uma variável, no caso longText abaixo,
+        //Para longos textos eu posso criar uma variável, no caso longText abaixo,
         //então no meu teste eu passo como primeiro argumento a variável criada
         //como segundo arguento o objeto, sempre entre {}, no caso delay, que recebe valor 0.  
         const longText = "teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste"
@@ -32,9 +35,14 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
 
         cy.get('.success').should('be.visible')
+
+        cy.tick(3000) //após capturar a imagem/mensagem uso o tick para adiantar o relógio do navegador
+
+        cy.get('.success').should('not.be.visible')
     })
 
     it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', function(){
+        cy.clock()
         cy.get('#firstName').should('be.visible').type('Leonardo')
         cy.get('#firstName').should('have.value', 'Leonardo')
 
@@ -47,6 +55,9 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
 
         cy.get('.error').should('be.visible')
+        
+        cy.tick(3000)
+        cy.get('.error').should('not.be.visible')
     })
 
     it('Campo de telefone continua vazio quando preenchido com valor não numérico', function(){
@@ -56,6 +67,8 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
     })
 
     it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function(){
+        cy.clock()
+
         cy.get('#firstName').should('be.visible').type('Leonardo')
         cy.get('#lastName').should('be.visible').type('Kyrillos')
         cy.get('#email').should('be.visible').type('leo@gmail.com')
@@ -64,6 +77,10 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
 
         cy.get('.error').should('be.visible')
+
+        cy.tick(3000)
+
+        cy.get('.error').should('not.be.visible')
     })
 
     it('Preenche e Limpa os Campos Nome, Sobrenome, email, e telefone', function(){
@@ -87,14 +104,27 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
     })
     
     it('exibe Mensagem de Erro ao Submeter o Formulário Sem Preencher os Campos Obrigatórios', function(){
+        cy.clock()
+
         cy.get('button[type="submit"]').click()
+        
         cy.get('.error').should('be.visible')
+
+        cy.tick(3000)
+
+        cy.get('.error').should('not.be.visible')
     })
 
     it('envia o formuário com sucesso usando um comando customizado', function(){
+        cy.clock()
+
         cy.fillMandatoryFieldsAndSubmit()
 
         cy.get('.success').should('be.visible')
+
+        cy.tick(3000)
+
+        cy.get('.error').should('not.be.visible')
     })
 
     it('utilizando o comando cy.contains', function(){
