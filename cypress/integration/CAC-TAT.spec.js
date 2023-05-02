@@ -11,7 +11,7 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
 
     it('Preenche os campos obrigatórios e envia o formulário', function(){
         
-        cy.clock() //congelo o relógio donavegador para capturar imagens/mensagens que desaparecem 
+        cy.clock() //congelo o relógio do navegador para capturar imagens/mensagens que desaparecem 
        
         cy.get('#firstName').should('be.visible').type('Leonardo')
         cy.get('#firstName').should('have.value', 'Leonardo')
@@ -60,11 +60,13 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.error').should('not.be.visible')
     })
 
-    it('Campo de telefone continua vazio quando preenchido com valor não numérico', function(){
-        cy.get('#phone')
-        .type('akshdyejrlsnnh')
-        .should('have.value', '')
-    })
+    Cypress._.times(3, function(){
+        it('Campo de telefone continua vazio quando preenchido com valor não numérico', function(){
+            cy.get('#phone')
+            .type('akshdyejrlsnnh')
+            .should('have.value', '')
+        })
+    }) //Cypres._.times roda a função varias vezes, no caso 3
 
     it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function(){
         cy.clock()
@@ -115,7 +117,8 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.error').should('not.be.visible')
     })
 
-    it('envia o formuário com sucesso usando um comando customizado', function(){
+    
+    it.only('envia o formuário com sucesso usando um comando customizado', function(){
         cy.clock()
 
         cy.fillMandatoryFieldsAndSubmit()
