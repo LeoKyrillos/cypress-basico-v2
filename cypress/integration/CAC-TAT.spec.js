@@ -118,7 +118,7 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
     })
 
     
-    it.only('envia o formuário com sucesso usando um comando customizado', function(){
+    it('envia o formuário com sucesso usando um comando customizado', function(){
         cy.clock()
 
         cy.fillMandatoryFieldsAndSubmit()
@@ -223,6 +223,27 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
             .click()
         
         cy.contains('Talking About Testing').should('be.visible')
+    })
+
+    it('exibe e esconde as mensagens de sucesso e erro usando o .invoke', function(){
+        cy.get('.success')
+          .should('not.be.visible')
+          .invoke('show')
+          .should('be.visible')
+          .and('contain', 'Mensagem enviada com sucesso.')
+          .invoke('hide')
+          .should('not.be.visible')
+        cy.get('.error')
+          .should('not.be.visible')
+          .invoke('show')
+          .should('be.visible')
+          .and('contain', 'Valide os campos obrigatórios!')
+          .invoke('hide')
+          .should('not.be.visible')
+      })
+
+    it('preenche a area de texto usando o comando .invoke', function(){
+        
     })
 
 })
